@@ -21,7 +21,7 @@ def get_webdriver():
     options.add_argument('window-size=1280x1080') # 
 
     options.add_argument(header)
-    path = r'C:\Users\금정산2_PC7\Desktop\python_workspace\chromedriver.exe'
+    path = r'.\chromedriver.exe'
     print('driver loading...')
     return webdriver.Chrome(path, options=options)
 
@@ -113,11 +113,11 @@ def get_date_table(date):
     time.sleep(9)
     
     only_num = re.sub(r'[^0-9]', '', date)
-
-    download_path = r'C:\Users\금정산2_PC7\Downloads'
+    # download_path = 크롬의 파일 기본 저장 경로
+    download_path = os.path.join(r"C:\Users", os.getlogin()+r"\Downloads")
     file_path = os.path.join(download_path,f'NewsResult_{only_num}-{only_num}.xlsx')
     df = pd.read_excel(file_path, engine='openpyxl')
-    con = sqlite3.connect('bigkinds.db')
+    con = sqlite3.connect('./data/bigkinds.db')
     df.to_sql('d'+only_num, con, if_exists='replace', index=False)
     print('Table 저장 완료')
     os.remove(file_path)
