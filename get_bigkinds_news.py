@@ -12,7 +12,6 @@ from dotenv import load_dotenv
 import pandas as pd
 from tqdm import tqdm
 
-
 parser = argparse.ArgumentParser(description='사용')
 parser.add_argument('-s','--start_day', type=int, default=20200101, help='크롤링 시작할 날짜 yyyymmdd')
 parser.add_argument('-e','--end_day', type=int, default=20220714, help='크롤링 종료할 날짜 yyyymmdd')

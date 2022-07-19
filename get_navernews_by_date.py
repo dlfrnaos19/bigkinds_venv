@@ -1,10 +1,11 @@
+# %%
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup as bs
 import requests
 
-def get_naver_news_soup(start_day, end_day, keyword):
+def get_naver_news_soup(start_day="2022.07.15", end_day="2022.07.15", keyword="아이유"):
     params = {
     'sm': 'tab_hty.top',
 'where': 'news',
@@ -33,9 +34,30 @@ def get_naver_news_soup(start_day, end_day, keyword):
         print('something went wrong')
         print(res.status_code)
         return None
-    return soup
-
-if "__main__" == __name__:
-    soup = get_naver_news_soup("2022.07.10", "2022.07.10", "삼성전자")
-    print(soup)
     
+    news_element = soup.select('#main_pack > section > div > div.group_news > ul > li > div > div > a')
+    title_list = []
+    link_list = []
+    for i in news_element:
+        title_list.append(i.text)
+        link_list.append(i.get('href'))
+    
+    related_soup = soup.select('#nx_right_related_keywords > div > div.related_srch > ul > li')
+    if related_soup == []:
+        print('no related keywords')
+        return title_list, link_list
+    else:
+        rel_keyword_list = []
+        for i in soup.select('#nx_right_related_keywords > div > div.related_srch > ul > li'):
+            rel_keyword_list.append(i.text)
+        return title_list, link_list, rel_keyword_list
+    
+if "__main__" == __name__:
+    # 연관검색어가  있을 경우, 연관검색까지 3개의 리스트 튜플로 반환 (뉴스타이틀, 뉴스링크, 연관검색어)
+    # 연관검색어가 없으면 2개의 튜플 리스트로 반환 (뉴스타이틀, 뉴스링크)
+    result = get_naver_news_soup("2022.05.13", "2022.05.13", "마리화나")
+
+# %%
+result
+
+
