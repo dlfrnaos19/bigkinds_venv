@@ -1,14 +1,17 @@
 from selenium import webdriver
-import time
-import pandas as pd
-from tqdm import tqdm
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from dotenv import load_dotenv
+
 import os 
+import time
 import sqlite3
 import re
 import argparse
+from dotenv import load_dotenv
+
+import pandas as pd
+from tqdm import tqdm
+
 
 parser = argparse.ArgumentParser(description='사용')
 parser.add_argument('-s','--start_day', type=int, default=20200101, help='크롤링 시작할 날짜 yyyymmdd')
