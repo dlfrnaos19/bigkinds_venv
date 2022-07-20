@@ -80,7 +80,7 @@ python get_bigkinds_news.py -s YYYYMMDD -e YYYYMMDD
 &nbsp;
 
 <details>
-<summary>get_wordcloud_newslist 사용법</summary>
+<summary> get_wordcloud_newslist 사용법</summary>
 
 <div markdown="1">
 
