@@ -58,7 +58,7 @@ def get_wordcloud_newslist(start_day=20220513, end_day=20220714, keyword_list="ë
     for i in key_list:
         gather_keyword.extend(i.split(','))
         
-        wordcloud = WordCloud(font_path='UttumDotumMR')
+    wordcloud = WordCloud(font_path='UttumDotumMR',width=800, height=800, background_color='black')
     counter_list = Counter(gather_keyword)
     img_wordcloud = wordcloud.generate_from_frequencies(counter_list)
     img_wordcloud.to_file(f'.\\{keyword_list[0]}_wordcloud.png')

@@ -93,7 +93,6 @@ if "__main__" == __name__:
     result = get_naver_news_soup(args.start_day, args.end_day, args.keyword)
     # 연관검색어가  있을 경우, 연관검색까지 3개의 리스트 튜플로 반환 (뉴스타이틀, 뉴스링크, 연관검색어)
     # 연관검색어가 없으면 2개의 튜플 리스트로 반환 (뉴스타이틀, 뉴스링크)
-    result = get_naver_news_soup("20220513", "20220513", "마리화나")
 
 
 
