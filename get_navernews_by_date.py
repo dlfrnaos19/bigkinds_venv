@@ -1,11 +1,34 @@
-# %%
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup as bs
 import requests
+from tqdm import tqdm
+import pandas as pd
+import argparse
 
-def get_naver_news_soup(start_day="2022.07.15", end_day="2022.07.15", keyword="아이유"):
+# 연관검색어가  있을 경우, 연관검색까지 3개의 리스트 튜플로 반환 (뉴스타이틀, 뉴스링크, 연관검색어)
+# 연관검색어가 없으면 2개의 튜플 리스트로 반환 (뉴스타이틀, 뉴스링크)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--start_day', type=str, default='20220715', help='start day')
+parser.add_argument('--end_day', type=str, default='20220715', help='end day')
+parser.add_argument('--keyword', type=str, default='아이유', help='keyword')
+
+def get_naver_news_soup(start_day="20220715", end_day="20220715", keyword="아이유"):
+    
+    """_summary_
+
+    날짜는 겹칠 수 있습니다.
+    
+    Args:
+        start_day (str): _description_. Defaults to "20220715".
+        end_day (str): _description_. Defaults to "20220715".
+        keyword (str): _description_. Defaults to "아이유".
+    """
+    
+    
+    date_list = pd.date_range(str(start_day), str(end_day), freq='D').to_pydatetime().tolist()
+    target_date = [i.strftime('%Y.%m.%d') for i in tqdm(date_list, desc='convert week list to date')]
+    
+    
     params = {
     'sm': 'tab_hty.top',
 'where': 'news',
@@ -13,8 +36,8 @@ def get_naver_news_soup(start_day="2022.07.15", end_day="2022.07.15", keyword="�
 'oquery': str(keyword),
 'tqi': 'hWiWBwprvxsssNYIuRZssssstwZ-398548',
 'nso': 'so:r,p:from20220610to20220610',
-'de': str(end_day),  # yyyy.mm.dd
-'ds': str(start_day),
+'de': target_date[-1],  # yyyy.mm.dd
+'ds': target_date[0],
 'mynews': '0',
 'office_section_code': '0',
 'office_type': '0',
@@ -45,19 +68,29 @@ def get_naver_news_soup(start_day="2022.07.15", end_day="2022.07.15", keyword="�
     related_soup = soup.select('#nx_right_related_keywords > div > div.related_srch > ul > li')
     if related_soup == []:
         print('no related keywords')
-        return title_list, link_list
+        result_dict = dict(
+            title_list=title_list,
+            link_list=link_list
+        )
+        df = pd.DataFrame(result_dict)
+        df.to_csv('{}_{}_{}.csv'.format(keyword, start_day, end_day), index=False)
+        return df
     else:
         rel_keyword_list = []
         for i in soup.select('#nx_right_related_keywords > div > div.related_srch > ul > li'):
             rel_keyword_list.append(i.text)
-        return title_list, link_list, rel_keyword_list
+        
+        result_dict = dict(
+            title_list=title_list,
+            link_list=link_list,
+            rel_keyword_list=rel_keyword_list
+        )
+        df = pd.DataFrame(result_dict)
+        df.to_csv('{}_{}_{}.csv'.format(keyword, start_day, end_day), index=False)
+        return df
     
 if "__main__" == __name__:
-    # 연관검색어가  있을 경우, 연관검색까지 3개의 리스트 튜플로 반환 (뉴스타이틀, 뉴스링크, 연관검색어)
-    # 연관검색어가 없으면 2개의 튜플 리스트로 반환 (뉴스타이틀, 뉴스링크)
-    result = get_naver_news_soup("2022.05.13", "2022.05.13", "마리화나")
-
-# %%
-result
+    args = parser.parse_args()
+    result = get_naver_news_soup(args.start_day, args.end_day, args.keyword)
 
 

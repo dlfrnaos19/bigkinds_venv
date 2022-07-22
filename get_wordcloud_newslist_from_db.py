@@ -4,11 +4,30 @@ import sqlite3
 import pandas as pd
 from wordcloud import WordCloud
 from collections import Counter
+from tqdm import tqdm
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--start_day', type=int, default=20220513)
+parser.add_argument('--end_day', type=int, default=20220714)
+parser.add_argument('--keyword_list', type=str, default="마리화나,마이더스AI,아이유")
 
-con = sqlite3.connect(r'.\bigkinds.db')
+def get_wordcloud_newslist(start_day=20220513, end_day=20220714, keyword_list="마리화나,마이더스AI,아이유") :
+    """_summary_
 
-# %%
-def get_wordcloud_newslist(target_date, keyword_list) :
+    Args:
+        start_day (int, optional): _description_. Defaults to 20220513.
+        end_day (int, optional): _description_. Defaults to 20220714.
+        keyword_list (str, optional): column seperate로 입력해주세요. Defaults to "마리화나,마이더스AI,아이유".
+
+    Returns:
+        tuple: img_wordcloud[image], news_list_df[csv]
+    """
+    date_list = pd.date_range(str(start_day), str(end_day), freq='D').to_pydatetime().tolist()
+    week_list = [date_list[i] for i in tqdm(range(len(date_list)),desc='create week list') if date_list[i].weekday() < 5]
+    target_date = [i.strftime('d%Y%m%d') for i in tqdm(week_list,desc='convert week list to date')]
+    print('week_date: 갯수', len(target_date))
+    keyword_list = str(keyword_list).split(',')
+    con = sqlite3.connect('bigkinds.db')
     
     SQL = f'SELECT * FROM {target_date[0]}'
     df = pd.read_sql(SQL, con)
@@ -17,7 +36,7 @@ def get_wordcloud_newslist(target_date, keyword_list) :
         df_tmp = pd.read_sql(SQL, con)
         df = pd.concat([df, df_tmp])
     df.reset_index(drop=True, inplace=True)
-    
+    con.close()
     # 특성추출에서 키워드 검색
     key_df = pd.DataFrame()
     for i in keyword_list:
@@ -42,14 +61,15 @@ def get_wordcloud_newslist(target_date, keyword_list) :
         wordcloud = WordCloud(font_path='UttumDotumMR')
     counter_list = Counter(gather_keyword)
     img_wordcloud = wordcloud.generate_from_frequencies(counter_list)
+    img_wordcloud.to_file(f'.\\{keyword_list[0]}_wordcloud.png')
+    news_list_df.to_csv(f'.\\{keyword_list[0]}news_list.csv', index=False)
     
     return img_wordcloud, news_list_df
     
 if '__main__' == __name__:
-    img_wordcloud, news_list_df = get_wordcloud_newslist(target_date=['d20220513','d20220516'], keyword_list=['마리화나','마이더스AI',''])
-    img_wordcloud.to_file(r'.\wordcloud.png')
-    news_list_df.to_csv(r'.\news_list.csv', index=False)
-    con.close()
+    args=parser.parse_args()
+    img_wordcloud, news_list_df = get_wordcloud_newslist(args.start_day, args.end_day, args.keyword_list)
+    
 
 
 

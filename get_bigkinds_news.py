@@ -15,7 +15,10 @@ from tqdm import tqdm
 parser = argparse.ArgumentParser(description='사용')
 parser.add_argument('-s','--start_day', type=int, default=20200101, help='크롤링 시작할 날짜 yyyymmdd')
 parser.add_argument('-e','--end_day', type=int, default=20220714, help='크롤링 종료할 날짜 yyyymmdd')
-args = parser.parse_args()
+main_url = 'https://www.bigkinds.or.kr/'
+search_url = 'https://www.bigkinds.or.kr/v2/news/index.do'
+
+
 
 def get_webdriver():
     options = webdriver.ChromeOptions()
@@ -119,22 +122,18 @@ def get_date_table(date):
     download_path = os.path.join(r"C:\Users", os.getlogin()+r"\Downloads")
     file_path = os.path.join(download_path,f'NewsResult_{only_num}-{only_num}.xlsx')
     df = pd.read_excel(file_path, engine='openpyxl')
-    con = sqlite3.connect('./data/bigkinds.db')
+    con = sqlite3.connect(r'.\bigkinds.db')
     df.to_sql('d'+only_num, con, if_exists='replace', index=False)
     print('Table 저장 완료')
     os.remove(file_path)
     print('파일 삭제 완료')
 
-if __name__ == '__main__':
-    main_url = 'https://www.bigkinds.or.kr/'
-    search_url = 'https://www.bigkinds.or.kr/v2/news/index.do'
-    driver = get_webdriver()
+def main(args,driver):
     time.sleep(0.5)
     driver.get('https://naver.com')
     time.sleep(2)
     driver = get_login_driver(driver)
     time.sleep(1)
-    
     start_day = args.start_day
     end_day = args.end_day
     week_date = get_week_date(start_day, end_day)
@@ -143,3 +142,11 @@ if __name__ == '__main__':
         time.sleep(2)
         get_date_table(date)
     driver.quit()
+
+if __name__ == '__main__':
+    driver = get_webdriver()
+    args = parser.parse_args()
+    main(args,driver)
+    
+    
+    
