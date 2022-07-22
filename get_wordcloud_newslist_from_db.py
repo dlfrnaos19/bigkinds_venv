@@ -7,9 +7,9 @@ from collections import Counter
 from tqdm import tqdm
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--start_day', type=int, default=20220513)
-parser.add_argument('--end_day', type=int, default=20220714)
-parser.add_argument('--keyword_list', type=str, default="마리화나,마이더스AI,아이유")
+parser.add_argument('-s','--start_day', type=int, default=20220513)
+parser.add_argument('-e','--end_day', type=int, default=20220714)
+parser.add_argument('-k','--keyword_list', type=str, default="마리화나,마이더스AI,아이유")
 
 def get_wordcloud_newslist(start_day=20220513, end_day=20220714, keyword_list="마리화나,마이더스AI,아이유") :
     """_summary_
@@ -62,7 +62,7 @@ def get_wordcloud_newslist(start_day=20220513, end_day=20220714, keyword_list="�
     counter_list = Counter(gather_keyword)
     img_wordcloud = wordcloud.generate_from_frequencies(counter_list)
     img_wordcloud.to_file(f'.\\{keyword_list[0]}_wordcloud.png')
-    news_list_df.to_csv(f'.\\{keyword_list[0]}news_list.csv', index=False)
+    news_list_df.to_csv(f'.\\{keyword_list[0]}_news_list.csv', index=False)
     
     return img_wordcloud, news_list_df
     

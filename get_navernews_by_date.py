@@ -9,9 +9,9 @@ import time
 # 연관검색어가 없으면 2개의 튜플 리스트로 반환 (뉴스타이틀, 뉴스링크)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--start_day', type=str, default='20220715', help='start day')
-parser.add_argument('--end_day', type=str, default='20220715', help='end day')
-parser.add_argument('--keyword', type=str, default='아이유', help='keyword')
+parser.add_argument('-s','--start_day', type=str, default='20220715', help='start day')
+parser.add_argument('-e','--end_day', type=str, default='20220715', help='end day')
+parser.add_argument('-k','--keyword', type=str, default='아이유', help='keyword')
     
 def get_naver_news_soup(start_day="20220715", end_day="20220715", keyword="아이유"):
     """_summary_

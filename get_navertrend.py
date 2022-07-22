@@ -8,8 +8,8 @@ import plotly.express as px
 parser = argparse.ArgumentParser()
 parser.add_argument('--sector', type=str, default="마리화나")
 parser.add_argument('--keywords', type=str, default='메디콕스,마이더스AI,아이큐어')
-parser.add_argument('--start_date', type=str, default='2022-07-11')
-parser.add_argument('--end_date', type=str, default='2022-07-15')
+parser.add_argument('--start_day', type=str, default='20220711')
+parser.add_argument('--end_day', type=str, default='20220715')
 
 def get_trend(sectors="마리화나", keywords="메디콕스,마이더스AI,아이큐어", start_date="20220611", end_date="20220715"):
     
