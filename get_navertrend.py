@@ -85,7 +85,7 @@ def get_trend(sectors="마리화나", keywords="메디콕스,마이더스AI,아�
     tickformat='%y.%m.%d',
 ))
     fig.layout.coloraxis.colorbar.title = '트렌드 강도'
-    fig.write_html(f'{sectors}_search_trend.html')
+    fig.write_image(f'{sectors}_search_trend.png')
     
     
 if __name__ == "__main__":
