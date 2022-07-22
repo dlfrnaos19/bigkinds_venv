@@ -4,6 +4,7 @@ from tqdm import tqdm
 import pandas as pd
 import argparse
 
+<<<<<<< HEAD
 # 연관검색어가  있을 경우, 연관검색까지 3개의 리스트 튜플로 반환 (뉴스타이틀, 뉴스링크, 연관검색어)
 # 연관검색어가 없으면 2개의 튜플 리스트로 반환 (뉴스타이틀, 뉴스링크)
 
@@ -29,6 +30,11 @@ def get_naver_news_soup(start_day="20220715", end_day="20220715", keyword="아�
     target_date = [i.strftime('%Y.%m.%d') for i in tqdm(date_list, desc='convert week list to date')]
     
     
+=======
+def get_naver_news_soup(start_day="20220715", end_day="20220715", keyword="아이유"):
+    start_day = start_day[:4] + "." + start_day[4:6] + "." + start_day[6:]
+    end_day = end_day[:4] + "." + end_day[4:6] + "." + end_day[6:]
+>>>>>>> 7ae995cac26996bc4ad051ff086da022ddf88078
     params = {
     'sm': 'tab_hty.top',
 'where': 'news',
@@ -90,7 +96,16 @@ def get_naver_news_soup(start_day="20220715", end_day="20220715", keyword="아�
         return df
     
 if "__main__" == __name__:
+<<<<<<< HEAD
     args = parser.parse_args()
     result = get_naver_news_soup(args.start_day, args.end_day, args.keyword)
+=======
+    # 연관검색어가  있을 경우, 연관검색까지 3개의 리스트 튜플로 반환 (뉴스타이틀, 뉴스링크, 연관검색어)
+    # 연관검색어가 없으면 2개의 튜플 리스트로 반환 (뉴스타이틀, 뉴스링크)
+    result = get_naver_news_soup("20220513", "20220513", "마리화나")
+
+# %%
+result
+>>>>>>> 7ae995cac26996bc4ad051ff086da022ddf88078
 
 
