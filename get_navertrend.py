@@ -90,7 +90,7 @@ def get_trend(sectors="마리화나", keywords="메디콕스,마이더스AI,아�
     
 if __name__ == "__main__":
     args = parser.parse_args()
-    get_trend(args.sector, args.keywords, args.start_date, args.end_date)
+    get_trend(args.sector, args.keywords, args.start_day, args.end_day)
         
 
 
