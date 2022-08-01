@@ -48,7 +48,7 @@ pip install -r requirements.txt
 &nbsp;
 
 데이터가 수집되어 있는 DB (DB내에서 날짜별 키워드 추출시 필요합니다)  
-https://drive.google.com/drive/folders/10s3fONH2pxjhc9yodMM_TEKaDwBftvsP?usp=sharing  
+https://hycu-my.sharepoint.com/:f:/g/personal/g201915008_hycu_ac_kr/Epyx7gldXKFAvt1NKxieG2kB8cTKJKFkfhYaxQfFm6FGkQ?e=kFWZpq
 
 &nbsp;
 
